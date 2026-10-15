@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "generated_at": "2026-10-15T10:00:00Z",
+  "suggestions": [
+    {
+      "id": "s001",
+      "file": "main.tex",
+      "category": "grammar",
+      "original": "used against jamming, or to make eavesdropping more difficult",
+      "replacement": "used against jamming or to make eavesdropping more difficult",
+      "explanation": "No comma before \"or\" when only two items are joined."
+    },
+    {
+      "id": "s002",
+      "file": "main.tex",
+      "category": "grammar",
+      "original": "\\cite{a,b} shows",
+      "replacement": "\\cite{a,b} show",
+      "explanation": "The subject \"the authors\" is plural."
+    },
+    {
+      "id": "s003",
+      "file": "main.tex",
+      "category": "consistency",
+      "original": "the channel model",
+      "context_before": "we study ",
+      "context_after": " of a passive",
+      "replacement": "the cascaded channel model",
+      "explanation": "Name the model precisely, so the reader can tell it apart from the direct channel."
+    },
+    {
+      "id": "s004",
+      "file": "main.tex",
+      "category": "delivery",
+      "original": "Our results, which we obtained after a very long and careful campaign of simulations in several different scenarios, confirm the gain.",
+      "explanation": "The main claim is buried behind a long relative clause. State the gain first, with a number, and move the simulation setup to a second sentence."
+    },
+    {
+      "id": "s005",
+      "file": "main.tex",
+      "category": "style",
+      "original": "basically",
+      "replacement": "",
+      "explanation": "\"Basically\" is a filler word and adds no information."
+    }
+  ]
+}

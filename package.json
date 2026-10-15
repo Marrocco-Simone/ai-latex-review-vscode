@@ -1,0 +1,53 @@
+{
+  "name": "ai-latex-review",
+  "displayName": "AI LaTeX Review",
+  "description": "Shows review suggestions from .review/suggestions.json as diagnostics with Accept and Dismiss quick fixes.",
+  "version": "0.2.0",
+  "publisher": "simone-local",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Marrocco-Simone/ai-latex-review-vscode.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:latex",
+    "onLanguage:tex",
+    "workspaceContains:**/.review/suggestions.json"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "aiLatexReview.reload",
+        "title": "Reload suggestions",
+        "category": "AI LaTeX Review"
+      },
+      {
+        "command": "aiLatexReview.clearDismissed",
+        "title": "Clear dismissed suggestions",
+        "category": "AI LaTeX Review"
+      }
+    ]
+  },
+  "scripts": {
+    "types": "tsc --noEmit",
+    "build": "esbuild src/extension.ts --bundle --platform=node --format=cjs --external:vscode --outfile=dist/extension.js",
+    "test": "bun test",
+    "package": "bun run build && vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "^3.2.0",
+    "bun-types": "^1.1.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.0"
+  }
+}
