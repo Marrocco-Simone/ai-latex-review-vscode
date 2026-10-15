@@ -49,7 +49,11 @@ async function readDismissed(dir: vscode.Uri): Promise<Dismissed[] | undefined> 
     const raw: unknown = JSON.parse(text);
     if (!isRecord(raw) || !Array.isArray(raw.dismissed)) throw new Error("expected { dismissed: [...] }");
     return raw.dismissed.filter(
-      (d: unknown): d is Dismissed => isRecord(d) && typeof d.file === "string" && typeof d.original === "string",
+      (d: unknown): d is Dismissed =>
+        isRecord(d) &&
+        typeof d.file === "string" &&
+        typeof d.original === "string" &&
+        (d.replacement === undefined || typeof d.replacement === "string"),
     );
   } catch (err) {
     log.appendLine(`${reviewFile(dir, "dismissed.json").fsPath}: ${String(err)}`);
@@ -152,6 +156,7 @@ async function refreshAll() {
 }
 
 async function reloadAll() {
+  accepted.clear();
   const files = await vscode.workspace.findFiles("**/.review/suggestions.json", "**/node_modules/**");
   const dirs = files.map((f) => vscode.Uri.joinPath(f, "..", ".."));
   const found = new Set(dirs.map((d) => d.toString()));
@@ -259,7 +264,7 @@ const BADGE: Record<string, string> = {
 
 const escapeMd = (text: string) =>
   text
-    .replace(/[\\`*_{}[\]()#+\-.!|~]/g, "\\$&")
+    .replace(/[\\`*_{}[\]()#+\-.!|~$]/g, "\\$&")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
@@ -310,6 +315,7 @@ export function activate(context: vscode.ExtensionContext) {
   const onReviewFile = (uri: vscode.Uri) => {
     const dir = vscode.Uri.joinPath(uri, "..", "..");
     debounce(`root:${dir.toString()}`, 200, async () => {
+      if (uri.path.endsWith("/suggestions.json")) accepted.clear();
       await loadRoot(dir);
       await refreshAll();
     });

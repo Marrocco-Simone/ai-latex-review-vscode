@@ -7,10 +7,12 @@ The extension does not call any AI service and has no network code. All review w
 ## How it works
 
 1. In Claude Code, run `/review-tex <file.tex> [focus]`. A focus can be a line range, a category ("clarity only") or "input only" (comments without replacement text).
-2. Claude writes `<root>/.review/suggestions.json`. `<root>` is the nearest folder above the `.tex` file that contains `main.tex`. Claude does not edit the `.tex` file.
+2. Claude writes `<root>/.review/suggestions.json`. `<root>` is the nearest folder above the `.tex` file that contains `main.tex`, or the folder of the `.tex` file if no such folder exists. Claude does not edit the `.tex` file.
+   - If `<root>/.gitignore` exists, the skill adds `.review/` to it.
+   - If an `academic_writing.md` file exists in `<root>` or a folder above it, the skill applies its rules and names them in the explanations.
 3. The extension shows each suggestion as a squiggle. Grammar suggestions are warnings. The other categories are information.
 4. The hover shows the category, a word-level diff of the change, the explanation, and **Accept** / **Dismiss** links.
-   - **Accept** replaces the text in the editor. The file is not saved. Cmd+Z undoes the edit.
+   - **Accept** replaces the text in the editor. The file is not saved. Cmd+Z undoes the edit. If the squiggle does not come back after the undo, run **AI LaTeX Review: Reload suggestions**.
    - **Dismiss** adds the suggestion to `.review/dismissed.json`. The next `/review-tex` run reads this file and does not repeat the suggestion.
 5. The Problems panel lists all suggestions. F8 / Shift+F8 moves between them. Cmd+. opens the same actions as a quick fix.
 
@@ -28,6 +30,7 @@ Requirements: [VS Code](https://code.visualstudio.com/), [Bun](https://bun.sh/),
    ```
 2. Link the skill into Claude Code:
    ```sh
+   mkdir -p ~/.claude/skills
    ln -s "$PWD/skill/review-tex" ~/.claude/skills/review-tex
    ```
    The skill validator imports `src/anchor.ts` from this repository, so keep the repository folder in place.

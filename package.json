@@ -2,7 +2,7 @@
   "name": "ai-latex-review",
   "displayName": "AI LaTeX Review",
   "description": "Shows review suggestions from .review/suggestions.json as diagnostics with Accept and Dismiss quick fixes.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "simone-local",
   "license": "MIT",
   "private": true,
